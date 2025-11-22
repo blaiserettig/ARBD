@@ -1,3 +1,7 @@
+drone/build/
+controller/build/
+
+
 # Prerequisites
 *.d
 
