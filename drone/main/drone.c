@@ -7,7 +7,10 @@
 void app_main(void) {
   gpio_config_t d2_config;
   d2_config.mode = GPIO_MODE_OUTPUT;
-  d2_config.pin_bit_mask = 1UL << 23;
+  d2_config.pin_bit_mask = 1ULL << GPIO_NUM_2;
   d2_config.pull_up_en = GPIO_PULLUP_ENABLE;
+  d2_config.pull_down_en = GPIO_PULLDOWN_DISABLE;
+  d2_config.intr_type = GPIO_INTR_DISABLE;
   gpio_config(&d2_config);
+  gpio_set_level(GPIO_NUM_2, 1);
 }
