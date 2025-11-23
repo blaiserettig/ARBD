@@ -2,6 +2,8 @@ drone/build/
 drone/.cache/
 controller/build/
 controller/.cache/
+controller/.idea/
+drone/.idea/
 
 # Prerequisites
 *.d
