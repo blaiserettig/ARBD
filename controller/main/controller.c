@@ -2,6 +2,7 @@
 #include "freertos/FreeRTOS.h" // Needed for vTaskDelay
 #include "freertos/task.h"     // Needed for vTaskDelay
 #include <stdio.h>
+#include <esp_adc/adc_oneshot.h>
 
 void app_main(void) {
     // ... (Your gpio_config code remains here) ...
@@ -24,10 +25,29 @@ void app_main(void) {
     gpio_config(&d2_config);
     gpio_config(&d4_config);
 
+    adc_oneshot_unit_handle_t adc2_unit;
+    adc_oneshot_unit_init_cfg_t adc2_init = {
+        .unit_id = ADC_UNIT_2,
+        .ulp_mode = ADC_ULP_MODE_DISABLE,
+    };
+    ESP_ERROR_CHECK(adc_oneshot_new_unit(&adc2_init, &adc2_unit));
+
+    adc_oneshot_chan_cfg_t chan_cfg = {
+    .atten = ADC_ATTEN_DB_12,
+    .bitwidth = ADC_BITWIDTH_12};
+
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(adc2_unit, ADC_CHANNEL_2, &chan_cfg));
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(adc2_unit, ADC_CHANNEL_0, &chan_cfg));
+
     while (1) {
         vTaskDelay(1000 / portTICK_PERIOD_MS); // Wait 1 second
+        int x_out = 0;
+        int y_out = 0;
+
+        adc_oneshot_read(adc2_unit, ADC_CHANNEL_2, &x_out);
+        adc_oneshot_read(adc2_unit, ADC_CHANNEL_0, &y_out);
+
         printf("x-axis: %d  y-axis: %d\n",
-            gpio_get_level(GPIO_NUM_2),
-            gpio_get_level(GPIO_NUM_4));
+            x_out, y_out);
     }
 }
