@@ -1,7 +1,6 @@
 idf_component_register(
   SRCS
   "drone.c"
-  "gyro.c"
   "pid_controller.c"
   "utils.c"
   "maths.c"
