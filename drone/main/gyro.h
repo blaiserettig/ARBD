@@ -2,6 +2,7 @@
 #define H_GYRO
 
 #include "driver/i2c_master.h"
+#include "driver/i2c_types.h"
 #include "maths.h"
 
 typedef struct {
